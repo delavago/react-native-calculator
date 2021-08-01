@@ -1,6 +1,6 @@
 import React from 'react';
 import { FC } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import COLORS from '../../assets/colors/colors';
 
 interface CalculatorButtonType {
@@ -10,7 +10,7 @@ interface CalculatorButtonType {
 
 let CalculatorButton:FC<CalculatorButtonType> = (props) => {
     return (
-        <View style={styles.buttonContainer}>
+        <Pressable style={styles.buttonContainer}>
             {props.type==="operator" ? 
                 <>{props.children}</>
             :null}
@@ -18,7 +18,7 @@ let CalculatorButton:FC<CalculatorButtonType> = (props) => {
             {props.type==="number" || props.type==="modifier" ? 
                 <Text style={styles.buttonText}>{props.value}</Text>
             :null}
-        </View>
+        </Pressable>
     )
 }
 

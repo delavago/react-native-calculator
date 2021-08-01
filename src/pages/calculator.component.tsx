@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -12,7 +13,9 @@ let Calculator = () => {
 
     let buttonColumn1 = [" ", "(", "7", "4", "1", "C"]
     let buttonColumn2 = [" ", ")", "8", "5", "2", "0"]
-    let buttonColumn3 = [" ", "-/+", "9", "6", "3", "."]
+    let buttonColumn3 = [" ", "-+", "9", "6", "3", "."]
+
+    let sampleHistory = ["10 + 10", "25 / 5", "96 * 5", "33 * 2", "1 + 1"]
 
     return (
         <View style={pagesStyles.pageContainer}>
@@ -22,13 +25,32 @@ let Calculator = () => {
                 />
             </View>
             <View style={styles.mainContentContainer}>
-                <View style={styles.calculatorValuesContainer}>
 
+                <View style={styles.calculatorValuesContainer}>
+                    {/* History list */}
+                    <View style={styles.historyContainer}>
+                        <FlatList
+                            data={sampleHistory}
+                            renderItem={({ item, index, separators })=>(
+                                <CalcHistoryItem data={item} key={"cal-history-"+index}/>
+                            )}
+                            scrollEnabled={true}
+                        />
+                    </View>
+                    
+                    <View style={{width: '100%', height: 2, backgroundColor: COLORS.lightBlack}}/>
+
+                    {/* Calculation view */}
+                    <View style={styles.calculationContainer}>
+                        <Text style={styles.calculationText}>10 + 10</Text>
+                        <Text style={styles.calculationResultText}>20</Text>
+                    </View>
                 </View>
+
                 <View style={styles.calculatorButtonContainer}>
                     <View style={styles.calculatorButtonColumn}>
-                        {buttonColumn1.map(val =>
-                            <View style={{ marginBottom: 15 }}>
+                        {buttonColumn1.map((val,index) =>
+                            <View style={{ marginBottom: 15 }} key={"buttonColumn1-"+index}>
                                 {val !== " " ? <CalculatorButton
                                     type="number"
                                     value={val}
@@ -36,8 +58,8 @@ let Calculator = () => {
                             </View>)}
                     </View>
                     <View style={styles.calculatorButtonColumn}>
-                        {buttonColumn2.map(val =>
-                            <View style={{ marginBottom: 15 }}>
+                        {buttonColumn2.map((val,index) =>
+                            <View style={{ marginBottom: 15 }} key={"buttonColumn2-"+index}>
                                 {val !== " " ? <CalculatorButton
                                     type="number"
                                     value={val}
@@ -45,8 +67,8 @@ let Calculator = () => {
                             </View>)}
                     </View>
                     <View style={styles.calculatorButtonColumn}>
-                        {buttonColumn3.map(val =>
-                            <View style={{ marginBottom: 15 }}>
+                        {buttonColumn3.map((val,index) =>
+                            <View style={{ marginBottom: 15 }} key={"buttonColumn3-"+index}>
                                 {val !== " " ? <CalculatorButton
                                     type="number"
                                     value={val}
@@ -117,6 +139,14 @@ let Calculator = () => {
     )
 }
 
+let CalcHistoryItem = (props: {data: String}) => {
+    return (
+        <Pressable style={styles.calcHistoryContainer}>
+            <Text style={styles.calcHistoryText}>{props.data}</Text>
+        </Pressable>
+    )
+}
+
 let styles = StyleSheet.create({
     headerWrapper: {
         marginTop: 25,
@@ -129,7 +159,11 @@ let styles = StyleSheet.create({
         display: 'flex'
     },
     calculatorValuesContainer: {
-        flex: 1
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        paddingLeft: 20,
+        paddingRight: 20
     },
     calculatorButtonContainer: {
         display: "flex",
@@ -147,7 +181,37 @@ let styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
         alignItems: 'center'
-    }
+    },
+    historyContainer: {
+        flex: 1
+    },
+    calculationContainer: {
+        flex: 1
+    },
+    calculationText: {
+        fontFamily: 'Poppins-Regular',
+        color: COLORS.offWhite,
+        fontSize: 18,
+        margin: 0,
+        textAlign: 'right'
+    },
+    calculationResultText: {
+        fontFamily: 'Poppins-SemiBold',
+        color: COLORS.offWhite,
+        fontSize: 24,
+        margin: 0,
+        textAlign: 'right',
+    },
+    calcHistoryContainer: {
+        marginBottom: 5
+    },
+    calcHistoryText: {
+        fontFamily: 'Poppins-Regular',
+        color: COLORS.lightBlack,
+        fontSize: 18,
+        margin: 0,
+        textAlign: 'right'
+    },
 })
 
 export default Calculator
