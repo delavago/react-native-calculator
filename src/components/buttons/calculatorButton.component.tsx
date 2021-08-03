@@ -5,17 +5,18 @@ import COLORS from '../../assets/colors/colors';
 
 interface CalculatorButtonType {
     type: string,
-    value: string
+    value: string,
+    onPress?: Function
 }
 
 let CalculatorButton:FC<CalculatorButtonType> = (props) => {
     return (
-        <Pressable style={styles.buttonContainer}>
+        <Pressable style={styles.buttonContainer} onPress={()=>props.onPress ? props.onPress() : null}>
             {props.type==="operator" ? 
                 <>{props.children}</>
             :null}
             
-            {props.type==="number" || props.type==="modifier" ? 
+            {props.type==="value" ? 
                 <Text style={styles.buttonText}>{props.value}</Text>
             :null}
         </Pressable>
